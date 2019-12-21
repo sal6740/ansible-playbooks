@@ -1,0 +1,25 @@
+---
+- name: installing and starting apache
+  hosts: prod
+
+  tasks:
+  - name: install epel repo
+    yum: pkg=epel-release state=present
+
+  - name: install python binding for selinux
+    yum: name={{item}} state=present
+    with_items:
+    - libselinux-python
+    - libsemanage-python
+
+  - name: test to see if SeLinux is running 
+    command: getenforce
+    register: sestatus
+    changed_when: false
+
+  - name: install apache
+    yum: pkg=httpd state=present
+
+  - name: start apache
+    service: name=httpd state=started enabled=yes
+

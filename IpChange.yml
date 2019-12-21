@@ -1,0 +1,27 @@
+---
+- name: chnage static ip and other directives of NIC
+  hosts: 192.168.1.78
+  vars:
+    Ip: '192.168.1.78'
+    Ip2: '192.168.1.1'
+    NIC: 'eth0'
+
+  tasks:
+    - name: changing gateway and DNS 
+      lineinfile: 
+        path: /etc/sysconfig/network-scripts/ifcfg-{{ NIC }}
+        regexp: '^{{ item }}='
+        line: '{{ item }}={{ Ip2 }}'
+      with_items:
+        - "{ GATEWAY }"
+        - "{ DNS1 }"
+
+    - name: changing IP address
+      lineinfile: 
+        path: /etc/sysconfig/network-scripts/ifcfg-eth0
+        regexp: '^IPADDR='
+        line: 'IPADDR={{ Ip }}'
+
+#   you will need to update you control node's inventory after below.
+    - name: restart Network service
+      service: name=network state=restarted

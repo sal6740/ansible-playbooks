@@ -1,0 +1,31 @@
+---
+- name: Install and start Apache HTTPD
+  hosts: prod
+
+  tasks: 
+  - name: httpd package is present
+    yum:
+      name: httpd
+      state: present
+
+  - name: httpd is started
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+  
+  - name: create a file index.html
+    file:
+      path: /var/www/html/index.html
+      state: touch
+      
+  - name: add text to index.html
+    lineinfile:
+      path: /var/www/html/index.html
+      line: 'Hello world BKNY'
+
+#  - name: correct index.html is present
+#    copy:
+#      src: /files/index.html 
+#      dest: /var/www/html/index.html
+
