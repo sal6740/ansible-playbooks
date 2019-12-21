@@ -7,7 +7,7 @@
       name: "{{ item }}"
       state: present
     with_items:
-    - asad
-    - bilal
-    - hamayun
+      - asad
+      - bilal
+      - hamayun
 
