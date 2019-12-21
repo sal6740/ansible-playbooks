@@ -1,0 +1,13 @@
+---
+- name: adding multiple users
+  hosts: prod
+  tasks: 
+  - name: adding the user with user module
+    user: 
+      name: "{{ item }}"
+      state: present
+    with_items:
+    - asad
+    - bilal
+    - hamayun
+
